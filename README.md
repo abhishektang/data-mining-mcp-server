@@ -1,82 +1,97 @@
 # Data Mining MCP Server
 
-A Model Context Protocol (MCP) server for organizing and accessing Data Mining course materials through AI assistants like Claude and GitHub Copilot.
+A Model Context Protocol (MCP) server for managing and querying Data Mining course materials. This server provides intelligent access to your lecture notes, tutorials, tutorial answers, and past papers through AI-powered tools.
 
-## 🎯 Overview
+## 📚 Features
 
-This MCP server provides structured access to comprehensive Data Mining course materials:
-
-- **Lectures** (Week 1-13)
-- **Tutorials** (Week 1-13)
-- **Tutorial Answers** (Week 1-13)
-- **Past Papers** (2015-2024)
-- **Additional Resources**
-
-## ✨ Features
-
-### Fast Text Extraction
-
-- ✅ **PDF Support** - Instant text extraction using PyMuPDF
-- ✅ **DOCX Support** - Native Word document parsing
-- ✅ **Blazing Fast** - No AI/OCR overhead, direct text extraction
-- ✅ **Lightweight** - Minimal dependencies
-
-### Available Tools
-
-1. **get-course-overview** - Complete overview of all materials
-2. **get-week-materials** - Materials for a specific week (week-1 to week-13)
-3. **list-past-papers** - List all past papers by year
-4. **get-year-papers** - Papers for a specific year (2015-2024)
-5. **search-materials** - Search across all course content
-6. **read-file** - Extract text from PDF/DOCX files
+- **Search Across All Materials**: Full-text search across lectures, tutorials, answers, and past papers with PDF/DOCX support
+- **Week-Based Organization**: Retrieve all materials for any specific week (1-13)
+- **Past Paper Access**: Quick access to exam papers from 2015-2024
+- **Course Overview**: Get a complete overview of available materials
+- **PDF & DOCX Support**: Instant text extraction using PyMuPDF and python-docx
+- **Resource Access**: Direct access to any document by path
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
-- Python 3.10+
+- Node.js 18 or higher
+- Python 3.10 or higher
 - npm
 
 ### Installation
 
+1. Clone or navigate to this directory
+2. Install Node.js dependencies:
 ```bash
-# Install Node.js dependencies
 npm install
+```
 
-# Set up Python virtual environment
+3. Set up Python environment:
+```bash
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install Python dependencies
 pip install PyMuPDF python-docx
+```
 
-# Build the server
+4. Build the project:
+```bash
 npm run build
 ```
 
-## 📁 Adding Course Materials
+### Adding Your Course Materials
 
-Place your materials in the `course-materials/` directory:
+Place your materials in the `course-materials/` directory following this structure:
 
 ```
 course-materials/
-├── lectures/week-1/
-├── lectures/week-2/
+├── lectures/week-1/          # Week 1 lecture notes
+├── lectures/week-2/          # Week 2 lecture notes
 ├── ...
-├── tutorials/week-1/
-├── tutorial-answers/week-1/
-├── past-papers/2024/
-└── additional-resources/
+├── lectures/week-13/         # Week 13 lecture notes
+├── tutorials/week-1/         # Week 1 tutorial questions
+├── tutorial-answers/week-1/  # Week 1 tutorial answers
+├── additional-resources/     # Supplementary materials
+└── past-papers/              # Past year papers by year (2015-2024)
+    ├── 2015/
+    ├── 2016/
+    ├── ...
+    ├── 2023/
+    └── 2024/
 ```
 
-Supported formats: PDF, DOCX, Markdown, Text files
+Supported file formats:
+- PDF (.pdf) - with instant text extraction
+- Word Documents (.docx)
+- Markdown (.md)
+- Text (.txt)
+- Any text-based format
 
-## ⚙️ Configuration
+### Example: Adding Week 1 Materials
 
-### VS Code with GitHub Copilot
+```bash
+# Add lecture notes
+cp ~/Downloads/week1-classification.pdf course-materials/lectures/week-1/
 
-Add to your MCP configuration (`~/Library/Application Support/Code/User/mcp.json`):
+# Add tutorial
+cp ~/Downloads/week1-tutorial.pdf course-materials/tutorials/week-1/
+
+# Add tutorial answers
+cp ~/Downloads/week1-answers.docx course-materials/tutorial-answers/week-1/
+
+# Add past papers by year
+cp ~/Downloads/2023-midterm.pdf course-materials/past-papers/2023/
+cp ~/Downloads/2023-final.pdf course-materials/past-papers/2023/
+cp ~/Downloads/2024-exam.pdf course-materials/past-papers/2024/
+```
+
+## 🔧 Using the Server
+
+### With VS Code GitHub Copilot (Recommended)
+
+1. Open VS Code Command Palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows/Linux)
+2. Type and select: **"MCP: Open User Configuration"**
+3. Add this configuration to your `mcp.json`:
 
 ```json
 {
@@ -84,288 +99,142 @@ Add to your MCP configuration (`~/Library/Application Support/Code/User/mcp.json
     "data-mining": {
       "type": "stdio",
       "command": "node",
-      "args": ["/absolute/path/to/Data Mining MCP Server/build/index.js"]
+      "args": ["/ABSOLUTE/PATH/TO/Data Mining MCP Server/build/index.js"]
     }
   }
 }
 ```
 
-### Claude Desktop
+Replace `/ABSOLUTE/PATH/TO/` with the actual path to this directory.
 
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+4. Save the file and restart VS Code or GitHub Copilot
+
+**Note**: The MCP configuration file is located at:
+- **macOS/Linux**: `~/Library/Application Support/Code/User/mcp.json`
+- **Windows**: `%USERPROFILE%\AppData\Roaming\Code\User\mcp.json`
+
+### With Claude Desktop (Alternative)
+
+If you prefer Claude Desktop, add to `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS:
 
 ```json
 {
   "mcpServers": {
     "data-mining": {
       "command": "node",
-      "args": ["/absolute/path/to/Data Mining MCP Server/build/index.js"]
+      "args": ["/ABSOLUTE/PATH/TO/Data Mining MCP Server/build/index.js"]
     }
   }
 }
 ```
 
-**Important**: Use absolute paths and restart your AI assistant after configuration.
-
-## 💡 Usage Examples
-
-Once connected, ask questions like:
-
-- "What materials are available for week 5?"
-- "Show me the 2023 past papers"
-- "Search for 'decision trees' in all materials"
-- "Read the week 3 lecture file"
-
-## 🛠️ Development
+### With MCP Inspector (for testing)
 
 ```bash
-# Watch mode for development
-npm run watch
-
-# Test the server
 npx @modelcontextprotocol/inspector node build/index.js
 ```
 
-## 📂 Project Structure
+## 🛠️ Available Tools
 
+### 1. `search-materials`
+Search across all course materials by content or filename.
+
+**Parameters:**
+- `query` (string): Search term
+
+**Example:**
 ```
-.
-├── src/
-│   └── index.ts              # Main MCP server
-├── scripts/
-│   └── extract_text.py       # PDF/DOCX text extraction
-├── course-materials/         # Your course content
-├── build/                    # Compiled output
-├── package.json
-├── tsconfig.json
-└── README.md
+Search for "decision trees" in all materials
+Search for "clustering" in materials
 ```
 
-## 🔧 Troubleshooting
+### 2. `get-week-materials`
+Retrieve all materials for a specific week.
 
-**Server not appearing?**
-- Verify absolute paths in config
-- Run `npm run build`
-- Restart your AI assistant completely
+**Parameters:**
+- `week` (string): Week identifier (e.g., "week-1", "week-2", ..., "week-13")
 
-**No materials showing?**
-- Check files are in `course-materials/` folders
-- Verify file permissions
+**Example:**
+```
+Get lecture notes for week 5
+Get tutorial answers for week 3
+```
 
-**Text extraction failing?**
-- Ensure PyMuPDF and python-docx are installed
-- Check Python virtual environment is activated
+### 3. `list-past-papers`
+List all available past year exam papers organized by year (2015-2024).
 
-## 📚 API Reference
+**Parameters:** None
 
-### Tools
+**Example:**
+```
+Show me all past papers
+List available exam years
+```
 
-| Tool | Input | Description |
-|------|-------|-------------|
-| `get-course-overview` | None | Get all available materials |
-| `get-week-materials` | `week: "week-1"` | Get specific week materials |
-| `list-past-papers` | None | List available years |
-| `get-year-papers` | `year: "2024"` | Get year's papers |
-| `search-materials` | `query: string` | Search all content |
-| `read-file` | `filePath: string` | Extract file text |
+### 4. `get-year-papers`
+Get all past papers for a specific year.
 
-## 📄 License
+**Parameters:**
+- `year` (string): Year to retrieve papers from (e.g., "2015", "2024")
 
-MIT
+**Example:**
+```
+Get all papers from 2024
+Show me 2023 exam papers
+```
 
-## 🤝 Contributing
+### 5. `get-course-overview`
+Get an overview of all available course materials.
 
-Contributions welcome! Feel free to customize for your course structure.
+**Parameters:** None
+
+**Example:**
+```
+Give me an overview of the course
+What materials are available?
+```
+
+### 6. `read-file`
+Read and extract text from PDF or DOCX files.
+
+**Parameters:**
+- `filePath` (string): Relative path from course-materials folder
+- `maxPages` (optional number): Limit pages to extract from PDFs
+
+**Example:**
+```
+Read the week 3 lecture PDF
+Extract text from lectures/week-5/decision-trees.pdf
+```
 
 ## 📖 Resources
 
-- [MCP Documentation](https://modelcontextprotocol.io)
-- [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+The server also exposes documents as resources that can be directly referenced:
 
----
+- `datamining://materials/week-{X}` - Access materials for week X (1-13)
+- `datamining://past-papers/{YEAR}` - Access past papers for specific year
 
-Built with ❤️ for Data Mining students
-````
+## �� Example Workflows
 
-### Available Resources
+### Studying for Week 3
+1. Ask your AI assistant: "Help me study Week 3"
+2. The AI will use `get-week-materials` to retrieve lectures, tutorials, and answers
+3. Ask follow-up questions about specific concepts like "decision trees"
 
-- Week-specific materials (week-1 through week-13)
-- Year-specific past papers (2015-2024)
+### Searching for a Topic
+1. Ask: "Find all materials about classification algorithms"
+2. The AI will use `search-materials` to find relevant content across all weeks
+3. Get direct access to the relevant documents
 
-## Installation
+### Exam Preparation
+1. Ask: "Help me prepare for my Data Mining exam"
+2. The AI will:
+   - List all past papers using `list-past-papers`
+   - Search for key concepts
+   - Help you practice questions
+   - Create a study plan based on available materials
 
-### Prerequisites
-
-- Node.js 18 or higher
-- Python 3.10 or higher
-- npm or npx
-- **GPU recommended** (but not required) for faster OCR processing
-
-### Setup
-
-1. Clone or download this repository:
-```bash
-cd "/Users/abhishektanguturi/Data Mining MCP Server"
-```
-
-2. Install Node.js dependencies:
-```bash
-npm install
-```
-
-3. Set up Python virtual environment and install Chandra OCR:
-```bash
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install chandra-ocr
-```
-
-**Note**: The first time you use OCR, Chandra will download the model (~4GB). This happens automatically and only needs to be done once.
-
-4. Build the TypeScript server:
-```bash
-npm run build
-```
-
-### Optional: GPU Acceleration
-
-For faster OCR processing, you can install PyTorch with GPU support:
-
-```bash
-# For NVIDIA GPUs (CUDA)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-
-# For Apple Silicon (MPS)
-pip install torch torchvision
-```
-
-The server will automatically use GPU if available, otherwise it falls back to CPU.
-
-## Adding Your Course Materials
-
-### Directory Structure
-
-```
-course-materials/
-├── lectures/
-│   ├── week-1/
-│   ├── week-2/
-│   ├── ...
-│   └── week-13/
-├── tutorials/
-│   ├── week-1/
-│   ├── week-2/
-│   ├── ...
-│   └── week-13/
-├── tutorial-answers/
-│   ├── week-1/
-│   ├── week-2/
-│   ├── ...
-│   └── week-13/
-├── past-papers/
-│   ├── 2015/
-│   ├── 2016/
-│   ├── ...
-│   └── 2024/
-└── additional-resources/
-```
-
-### How to Add Materials
-
-1. **Lectures**: Place your lecture slides, notes, or documents in the appropriate `week-X` folder under `course-materials/lectures/`
-
-2. **Tutorials**: Add tutorial question sheets to `course-materials/tutorials/week-X/`
-
-3. **Tutorial Answers**: Add answer sheets to `course-materials/tutorial-answers/week-X/`
-
-4. **Past Papers**: Add examination papers to the appropriate year folder under `course-materials/past-papers/YYYY/`
-
-5. **Additional Resources**: Place any extra materials in `course-materials/additional-resources/`
-
-**Supported file formats**: PDF, Markdown (.md), Text files (.txt), Images (for diagrams), etc.
-
-## Using with Claude Desktop
-
-### Configuration
-
-Add this server to your Claude Desktop config file:
-
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "data-mining": {
-      "command": "node",
-      "args": [
-        "/Users/abhishektanguturi/Data Mining MCP Server/build/index.js"
-      ]
-    }
-  }
-}
-```
-
-**Note**: Replace the path with the absolute path to your build/index.js file.
-
-### Alternative: Using npx
-
-You can also run it via npx:
-
-```json
-{
-  "mcpServers": {
-    "data-mining": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "/Users/abhishektanguturi/Data Mining MCP Server"
-      ]
-    }
-  }
-}
-```
-
-### Restart Claude Desktop
-
-After adding the configuration, completely quit and restart Claude Desktop for the changes to take effect.
-
-## Using with Other MCP Clients
-
-### VS Code with GitHub Copilot
-
-Press `Cmd+Shift+P` and select "MCP: Add server...". Choose STDIO and provide:
-- Command: `node`
-- Args: `["/path/to/Data Mining MCP Server/build/index.js"]`
-
-### MCP Inspector (for testing)
-
-Test your server using the MCP Inspector:
-
-```bash
-npx @modelcontextprotocol/inspector node build/index.js
-```
-
-## Example Usage
-
-Once connected to Claude Desktop, you can ask questions like:
-
-- "What materials are available for week 5 of Data Mining?"
-- "Show me the past papers from 2023"
-- "Search for 'decision trees' in all course materials"
-- "Give me an overview of all available Data Mining course content"
-- "What topics are covered in week 10 lectures?"
-
-## Development
-
-### Watch Mode
-
-For development, you can run TypeScript in watch mode:
-
-```bash
-npm run watch
-```
+## 🏗️ Development
 
 ### Project Structure
 
@@ -373,110 +242,97 @@ npm run watch
 .
 ├── src/
 │   └── index.ts          # Main MCP server implementation
-├── course-materials/     # Your course content goes here
+├── scripts/
+│   └── extract_text.py   # PDF/DOCX text extraction utility
+├── course-materials/     # Your course materials
+│   ├── lectures/
+│   ├── tutorials/
+│   ├── tutorial-answers/
+│   ├── additional-resources/
+│   └── past-papers/
 ├── build/                # Compiled JavaScript (generated)
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
 
-## Troubleshooting
+### Making Changes
 
-### Server not appearing in Claude Desktop
+1. Edit `src/index.ts`
+2. Rebuild: `npm run build`
+3. Restart your MCP client to pick up changes
 
-1. Check the config file path is correct
-2. Ensure the path to build/index.js is absolute, not relative
-3. Make sure you've run `npm run build`
-4. Completely quit and restart Claude Desktop (not just close the window)
-5. Check Claude Desktop logs: `~/Library/Logs/Claude/` (macOS)
+### Watch Mode (for development)
 
-### "Cannot find module" errors
+```bash
+npm run watch
+```
 
-Run `npm install` to ensure all dependencies are installed.
+This will automatically rebuild when you make changes to the source code.
 
-### No materials showing up
+## �� Tips for Exam Preparation
 
-1. Make sure you've added files to the `course-materials/` folders
-2. Check file permissions - ensure the server can read the files
-3. Verify the folder structure matches the expected layout
+1. **Organize Your Materials**: Keep materials organized by week for easy retrieval
+2. **Use Descriptive Filenames**: Name files clearly (e.g., `week3-decision-trees.pdf`)
+3. **Combine with AI**: Ask the AI to quiz you, explain concepts, or create study guides
+4. **Search Effectively**: Use specific terms to find relevant materials across all weeks
+5. **Practice with Past Papers**: Use the `list-past-papers` tool to access previous exams
 
-### Search not finding content
+## 🔒 Privacy
 
-- Ensure files are text-based (PDFs need to be searchable, not scanned images)
-- Check file encodings are UTF-8
-- Verify files aren't corrupted
+All materials are stored locally on your machine. The MCP server only provides access to your AI assistant through the Model Context Protocol. Your course materials never leave your computer.
 
-## Tools Reference
-
-### get-course-overview
-
-Returns an overview of all available materials organized by category.
-
-**Input**: None
-
-**Output**: JSON object with arrays of available weeks and years
-
-### get-week-materials
-
-Retrieves all materials for a specific week.
-
-**Input**:
-- `week` (string): Week identifier (e.g., "week-1", "week-2", ..., "week-13")
-
-**Output**: JSON object with lectures, tutorials, and tutorial answers for that week
-
-### list-past-papers
-
-Lists all available past paper years.
-
-**Input**: None
-
-**Output**: Array of available years
-
-### get-year-papers
-
-Gets all papers for a specific year.
-
-**Input**:
-- `year` (string): Year (e.g., "2015", "2016", ..., "2024")
-
-**Output**: Array of paper files for that year
-
-### search-materials
-
-Searches across all course materials. Automatically uses OCR for PDF/DOCX files.
-
-**Input**:
-- `query` (string): Search term or phrase
-
-**Output**: Array of matches with file paths and excerpts
-
-### read-file
-
-Reads and extracts text content from a specific file using OCR (for PDFs/DOCX).
-
-**Input**:
-- `filePath` (string): Relative path from course-materials folder (e.g., "lectures/week-1/slides.pdf")
-
-**Output**: Full text content extracted from the file
-
-## Resources Reference
-
-Resources provide direct access to materials through URIs:
-
-- `datamining://materials/week-X` - Access materials for week X
-- `datamining://past-papers/YYYY` - Access past papers for year YYYY
-
-## License
+## 📝 License
 
 MIT
 
-## Support
+## 🆘 Troubleshooting
 
-For issues or questions about setting up the MCP server, please refer to:
+### Server won't start
+- Make sure you've run `npm install` and `npm run build`
+- Check that Node.js version is 18 or higher: `node --version`
+- Verify Python dependencies are installed in `.venv/`
+
+### Materials not showing up
+- Verify files are in the correct directory structure under `course-materials/`
+- Check file permissions (files must be readable)
+- Try using the `get-course-overview` tool to see what's detected
+
+### Search not finding content
+- Ensure PDFs have text layers (not scanned images without OCR)
+- Check file encoding (should be UTF-8)
+- Try searching for exact words from the document
+
+### PDF/DOCX extraction failing
+- Verify Python virtual environment is activated
+- Ensure PyMuPDF and python-docx are installed: `pip list | grep -E "PyMuPDF|python-docx"`
+- Check Python path in your environment
+
+## 📚 Example Materials Template
+
+Create well-organized materials with clear naming:
+
+```
+course-materials/
+├── lectures/week-1/
+│   ├── w1-introduction-to-data-mining.pdf
+│   └── w1-lecture-notes.md
+├── tutorials/week-1/
+│   └── w1-tutorial-questions.pdf
+└── tutorial-answers/week-1/
+    └── w1-tutorial-solutions.docx
+```
+
+## 🤝 Contributing
+
+This is a study tool for Data Mining students. Feel free to customize it for your own needs or contribute improvements!
+
+## 📖 Resources
+
 - [MCP Documentation](https://modelcontextprotocol.io)
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+- [PyMuPDF Documentation](https://pymupdf.readthedocs.io/)
 
-## Contributing
+---
 
-Feel free to customize this server for your specific Data Mining course structure and needs!
+**Happy Studying! 🎓** Use this tool to ace your Data Mining exam!
