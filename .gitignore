@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+.venv/
+*.pyc
+__pycache__/
+
+# Build outputs
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Course materials (if you want to keep them private)
+# Uncomment the line below to exclude course materials from git
+# course-materials/

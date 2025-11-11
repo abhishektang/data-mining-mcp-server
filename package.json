@@ -1,0 +1,36 @@
+{
+  "name": "data-mining-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Data Mining course materials - lectures, tutorials, and past papers",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "data-mining-mcp-server": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector node build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "data-mining",
+    "course-materials",
+    "education"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  },
+  "files": [
+    "build",
+    "course-materials"
+  ]
+}
